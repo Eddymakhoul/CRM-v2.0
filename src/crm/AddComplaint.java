@@ -18,16 +18,20 @@ import javax.swing.JOptionPane;
  */
 public class AddComplaint extends javax.swing.JDialog {
 public Connection con;
+public static String ID;
     /**
      * Creates new form AddComplaint
      */
-    public AddComplaint(java.awt.Frame parent, boolean modal) {
+    public AddComplaint(java.awt.Frame parent, boolean modal, String ID) {
         super(parent, modal);
         initComponents();
+        this.ID = ID;
         setLocationRelativeTo(this);
+        setTitle("Customer Relationship Management - New Complaint");
         getConnection();
+        System.out.println(ID);
     }
-private void getConnection() {
+    private void getConnection() {
         try {
             String JDBC_DRIVER = "com.mysql.jdbc.Driver";
             String DB_URL = "jdbc:mysql://localhost:3306/adherent";
@@ -56,9 +60,8 @@ private void getConnection() {
         jScrollPane2 = new javax.swing.JScrollPane();
         txtResolution = new javax.swing.JTextArea();
         jLabel6 = new javax.swing.JLabel();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
         btnSubmit = new javax.swing.JButton();
+        chkSatisfied = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -76,18 +79,14 @@ private void getConnection() {
 
         jLabel6.setText("Adherent Satisfation:");
 
-        buttonGroup1.add(jRadioButton1);
-        jRadioButton1.setText("Satisfied");
-
-        buttonGroup1.add(jRadioButton2);
-        jRadioButton2.setText("Not Satisfied");
-
         btnSubmit.setText("Submit");
         btnSubmit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSubmitActionPerformed(evt);
             }
         });
+
+        chkSatisfied.setText("Is Satisfied");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -101,9 +100,7 @@ private void getConnection() {
                         .addGroup(layout.createSequentialGroup()
                             .addComponent(jLabel6)
                             .addGap(18, 18, 18)
-                            .addComponent(jRadioButton1)
-                            .addGap(18, 18, 18)
-                            .addComponent(jRadioButton2))
+                            .addComponent(chkSatisfied))
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 800, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel5)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 800, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -124,8 +121,7 @@ private void getConnection() {
                 .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(jRadioButton1)
-                    .addComponent(jRadioButton2))
+                    .addComponent(chkSatisfied))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSubmit)
                 .addContainerGap(27, Short.MAX_VALUE))
@@ -149,8 +145,7 @@ private void getConnection() {
                 
                 getConnection();
                 
-                 String query = "insert into adhComplaint values "
-                    + "('"+complaint+"','"+resolution+"')";
+                 String query = "insert into adhComplaint(adhComplaint,adhResolution,adhId,adhsatisfaction) values ('"+complaint+"','"+resolution+"','"+ID+"',"+ (chkSatisfied.isSelected() ? "true" : "false") +")";
                 
                 Statement stmt = con.createStatement();
                 stmt.execute(query);
@@ -195,7 +190,7 @@ private void getConnection() {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                AddComplaint dialog = new AddComplaint(new javax.swing.JFrame(), true);
+                AddComplaint dialog = new AddComplaint(new javax.swing.JFrame(), true, ID);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -210,11 +205,10 @@ private void getConnection() {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSubmit;
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JCheckBox chkSatisfied;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea txtComplaint;

@@ -326,7 +326,7 @@ public class Search extends javax.swing.JFrame {
         int selectedRow = jTable1.getSelectedRow();
         if (selectedRow > -1) {
            int adhId = Integer.parseInt(jTable1.getValueAt(selectedRow, 0).toString());
-        AddComplaint newComplaint = new AddComplaint(this,true);
+        AddComplaint newComplaint = new AddComplaint(this,true,jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString());
         newComplaint.setVisible(true);
             refreshTable();
         } else {
